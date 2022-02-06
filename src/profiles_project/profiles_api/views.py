@@ -4,6 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 
 from . import serializers
 from . import models
@@ -114,3 +118,26 @@ class UserProfileVewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'email')
 
 
+class LoginVewSet(viewsets.ViewSet):
+    """creates and updates an auth token"""
+
+    serializer_class = AuthTokenSerializer
+
+    def create(self, request):
+        """use ObtainAuthToken to validate and create a token"""
+
+        return ObtainAuthToken().post(request)
+
+
+class UserProfileFeedItem(viewsets.ModelViewSet):
+    """Handles creating, reading, updating profile feed items"""
+
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedSerializer
+    queryset = models.ProfilesFeedItem.objects.all()
+    permission_classes = (permissions.PostOwnStatus, IsAuthenticated)
+
+    def perform_create(self, serializer):
+        """Sets the user to the logged in user"""
+
+        serializer.save(user_profiles=self.request.user)

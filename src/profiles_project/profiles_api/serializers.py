@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from . import models
 
+
 class HelloSerializer(serializers.Serializer):
     """Serializers a name field for testing api"""
 
@@ -28,3 +29,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ProfileFeedSerializer(serializers.ModelSerializer):
+    """A serializer for profile feed items."""
+
+    class Meta:
+        model = models.ProfilesFeedItem
+        fields = ('id', 'user_profiles', 'status_text', 'created_on')
+        extra_kwargs = {'user_profiles': {'read_only': True}}
