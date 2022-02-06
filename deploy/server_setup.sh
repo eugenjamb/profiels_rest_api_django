@@ -3,7 +3,7 @@
 set -e
 
 # TODO: Set to URL of git repo.
-PROJECT_GIT_URL='https://github.com/eugenjamb/profiles-rest-api-django.git'
+PROJECT_GIT_URL='https://github.com/eugenjamb/profiels_rest_api_django.git'
 
 PROJECT_BASE_PATH='/usr/local/apps'
 VIRTUALENV_BASE_PATH='/usr/local/virtualenvs'
